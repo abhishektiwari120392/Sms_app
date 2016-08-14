@@ -29,11 +29,16 @@
         <activity
             android:name=".SmsDetails"
             android:label="@string/title_activity_sms_details"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".SmsFromSearchActivity"
+            android:label="Search Result"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SendMessageActivity"
             android:label="@string/title_activity_send_message"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <receiver android:name=".receiver.IncomingSms">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

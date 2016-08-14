@@ -9,21 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
- * Created by abhishektiwari on 09/08/16.
+ * Created by abhishektiwari on 13/08/16.
  */
 public class SmsListAdapter extends ArrayAdapter<List<Long>> {
     // List context
@@ -31,7 +25,6 @@ public class SmsListAdapter extends ArrayAdapter<List<Long>> {
     // List values
     private List<Long> threadIds = new ArrayList<>();
     private Map<Long, List<SmsData>> smsMap = new HashMap<>();
-//    private Set<Map<Long, List<SmsData>>> smsSet = new TreeSet(new SmsDataCompatator());
     private Map<Long, Long> smsDateThreadIdList = new TreeMap<Long, Long>(Collections.reverseOrder());
 
     public SmsListAdapter(Context context, Map<Long, List<SmsData>> smsMap) {
@@ -90,20 +83,4 @@ public class SmsListAdapter extends ArrayAdapter<List<Long>> {
             context.startActivity(intent);
         }
     }
-
-//    class SmsDataComparator implements Comparator<List<SmsData>> {
-//
-//        @Override
-//        public int compare(List<SmsData> lhs, List<SmsData> rhs) {
-//            return lhs.get(0).getDate() > rhs.get(0).getDate() ? 1 : -1 ;
-//        }
-//    }
-
-//    class SmsDataCompatator implements Comparator<Map.Entry<Long, List<SmsData>>> {
-//
-//        @Override
-//        public int compare(Map.Entry<Long, List<SmsData>> lhs, Map.Entry<Long, List<SmsData>> rhs) {
-//            return lhs.getValue().get(0).getDate() > rhs.getValue().get(0).getDate() ? 1 : -1;
-//        }
-//    }
 }

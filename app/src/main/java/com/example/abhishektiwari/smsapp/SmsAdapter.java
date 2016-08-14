@@ -1,7 +1,9 @@
 package com.example.abhishektiwari.smsapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +30,21 @@ public class SmsAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
         TextView number = (TextView) view.findViewById(R.id.smsNumberText);
         TextView message = (TextView) view.findViewById(R.id.sms_body);
-        String contactNum = cursor.getString(cursor.getColumnIndexOrThrow("address")).toString();
-        String body = cursor.getString(cursor.getColumnIndexOrThrow("body")).toString();
+        String contactNum = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.ADDRESS)).toString();
+        String body = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.BODY)).toString();
         number.setText(contactNum);
         message.setText(body);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(context, SmsThreadDetails.class);
+//                intent.putExtra("THREAD_ID", cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID)));
+//                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

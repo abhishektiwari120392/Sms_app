@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.abhishektiwari.smsapp.DashBoardActivity"
     tools:showIn="@layout/activity_dash_board">
 
@@ -14,10 +13,33 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_margin="@dimen/text_margin"-->
         <!--android:text="@string/large_text" />-->
+
+    <ListView
+        android:layout_marginTop="60dp"
+        android:visibility="gone"
+        android:id="@+id/search_result_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+    </ListView>
+
     <ListView
         android:id="@+id/message_list"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/new_sms_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitCenter"
+        android:src="@android:drawable/ic_menu_add"
+        android:tint="@color/colorPrimaryDark"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

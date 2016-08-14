@@ -19,6 +19,40 @@
         android:drawableRight="@android:drawable/ic_input_add"/>
 
     <RelativeLayout
+        android:id="@+id/selected_contact_layout"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="#dcdcdc">
+
+        <Button
+            android:id="@+id/selected_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Archana"
+            android:background="#dcdcdc"/>
+
+        <ImageView
+            android:id="@+id/reset"
+            android:layout_toRightOf="@+id/selected_contact"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="#727272"
+            android:layout_alignParentBottom="true"/>
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/filter_contact_list"
+        android:layout_below="@id/contact_number"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/sms_layout"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/contact_number"
         android:layout_width="match_parent"
@@ -30,26 +64,32 @@
             android:id="@+id/sent_message"
             android:layout_width="match_parent"
             android:layout_marginBottom="5dp"
-            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_height="250dp"
+            android:background="@drawable/et_bkground"
             android:textSize="14sp"
             android:textColor="#727272"/>
+
+        <ImageView
+            android:id="@+id/send_msg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:tint="#727272"
+            android:src="@android:drawable/ic_menu_send"/>
 
         <EditText
             android:id="@+id/message_content"
             android:layout_below="@+id/sent_message"
             android:layout_alignParentBottom="true"
+            android:hint="Enter your Message"
+            android:paddingLeft="5dp"
+            android:background="@drawable/et_bkground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/message_content" />
-
-        <ImageView
-            android:id="@+id/send_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:src="@android:drawable/ic_menu_send"/>
+            android:layout_height="40dp"
+            android:layout_toLeftOf="@id/send_msg" />
 
     </RelativeLayout>
 
