@@ -105,6 +105,16 @@ public class SendMessageActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (searchListView.getVisibility() == View.VISIBLE) {
+            searchListView.setVisibility(View.GONE);
+            smsLayout.setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     void initView(){
         message_frame = (EditText) findViewById(R.id.message_content);
         recipent_frame = (EditText) findViewById(R.id.contact_number);
