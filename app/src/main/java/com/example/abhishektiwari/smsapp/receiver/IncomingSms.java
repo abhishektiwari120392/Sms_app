@@ -11,16 +11,16 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Telephony;
 import android.support.v7.app.NotificationCompat;
-import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
 import com.example.abhishektiwari.smsapp.DashBoardActivity;
-import com.example.abhishektiwari.smsapp.R;
-import com.example.abhishektiwari.smsapp.SmsData;
 import com.example.abhishektiwari.smsapp.SmsDetails;
+import com.example.abhishektiwari.smsapp.data.SmsData;
+import com.example.abhishektiwari.smsapp.utilities.Utility;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,56 +36,61 @@ public class IncomingSms extends BroadcastReceiver{
             //---retrieve the SMS message received---
             Object[] pdus = (Object[]) bndl.get("pdus");
             msg = new SmsMessage[pdus.length];
+            List<String> numbers = new ArrayList<>();
             String str = "";
+            List<String> bodies = new ArrayList<>();
             for (int i = 0; i < msg.length; i++) {
                 msg[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                 str += "SMS From " + msg[i].getOriginatingAddress();
                 str += " :\r\n";
+                bodies.add(msg[i].getMessageBody().toString());
                 str += msg[i].getMessageBody().toString();
                 str += "\n";
+                String num = msg[i].getOriginatingAddress();
+                numbers.add(num);
             }
 
-            //---display incoming SMS as a Android Toast---
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-            //---Make a notification
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-            mBuilder.setContentTitle("New Message");
-            mBuilder.setContentText(str);
-            mBuilder.setTicker("New Message Alert!");
-            mBuilder.setAutoCancel(true);
-            mBuilder.setSmallIcon(android.R.drawable.stat_notify_chat);
+            Uri uri = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                uri = Telephony.Sms.CONTENT_URI;
+            } else {
+                uri = Uri.parse("content://sms");
+            }
+            String[] projections = {Telephony.Sms._ID, Telephony.Sms._ID, Telephony.Sms.ADDRESS, Telephony.Sms.BODY, Telephony.Sms.THREAD_ID, Telephony.Sms.DATE, Telephony.Sms.TYPE};
+            int mNotificationId = 1;
+            for (String eachNum : numbers) {
+                List<SmsData> smsDataList = new ArrayList<>();
+                long thread_id = 0;
+                Cursor cursor = Utility.getCursor(context, uri, projections, "address = ?", new String[]{eachNum}, " date DESC");
+                if (cursor.moveToFirst()) {
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        String body = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.BODY)).toString();
+                        thread_id = Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID)).toString());
+                        long date = Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.DATE)).toString());
+                        int type = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.TYPE)).toString());
+                        SmsData sms = new SmsData(eachNum, body, thread_id, date, type);
+                        smsDataList.add(sms);
+                        cursor.moveToNext();
+                    }
+                    smsDataList.add(0, new SmsData(eachNum, bodies.get(mNotificationId-1), thread_id, new Date().getTime(), 1));
+                }
+                //---Make a notification
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+                mBuilder.setContentTitle("New Message");
+                mBuilder.setContentText(str);
+                mBuilder.setTicker("New Message Alert!");
+                mBuilder.setAutoCancel(true);
+                mBuilder.setSmallIcon(android.R.drawable.stat_notify_chat);
 
-            String number = msg[0].getOriginatingAddress();
-            Cursor cursor = null;
-            Uri uri = Telephony.Sms.CONTENT_URI;
-            String[] projections = {Telephony.Sms.BODY, Telephony.Sms.DATE, Telephony.Sms.TYPE};
-            cursor = context.getContentResolver().query(uri, projections, Telephony.Sms.ADDRESS + " = " + number, null, " date ASC");
-            long threadId;
-//            List<SmsData> smsDataList = new ArrayList<>();
-//            if (cursor.moveToFirst()) {
-//                threadId = Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID)));
-//                for (int i = 0; i < cursor.getCount(); i++) {
-//                    try {
-//                        String body = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.BODY)).toString();
-//                        long date = Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.DATE)).toString());
-//                        int type = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.TYPE)).toString());
-//                        SmsData sms = new SmsData(number, body, threadId , date, type);
-//                        smsDataList.add(sms);
-//                    } catch (Exception e) {
-//
-//                    } finally {
-//                        cursor.moveToNext();
-//                    }
-//                }
-//            }
-            Intent resultIntent = new Intent(context, DashBoardActivity.class);
-//            intent.putParcelableArrayListExtra("MESSAGES", (ArrayList<? extends Parcelable>) smsDataList);
-            PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(resultPendingIntent);
+                Intent resultIntent = new Intent(context, SmsDetails.class);
+                resultIntent.putParcelableArrayListExtra("MESSAGES", (ArrayList<? extends Parcelable>) smsDataList);
+                PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                mBuilder.setContentIntent(resultPendingIntent);
 
-            int mNotificationId = 001;
-            NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-            mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+                mNotifyMgr.notify(mNotificationId++ , mBuilder.build());
+            }
+
         }
     }
 }

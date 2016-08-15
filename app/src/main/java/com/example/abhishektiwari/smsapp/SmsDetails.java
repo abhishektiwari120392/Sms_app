@@ -6,27 +6,25 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AbsoluteLayout;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
+import com.example.abhishektiwari.smsapp.data.SmsData;
+import com.example.abhishektiwari.smsapp.utilities.Utility;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class SmsDetails extends AppCompatActivity {
 
@@ -114,7 +112,7 @@ public class SmsDetails extends AppCompatActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.message.setText(smsDataList.get(position).getBody());
-            String dateString = Utility.getDate(smsDataList.get(position).getDate(), "yyyy-MM-dd");
+            String dateString = Utility.getDate(smsDataList.get(position).getDate(), "yyyy-MM-dd hh:mm:ss");
             viewHolder.date.setText(dateString);
             return convertView;
         }

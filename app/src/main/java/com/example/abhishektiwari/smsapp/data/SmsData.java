@@ -1,4 +1,4 @@
-package com.example.abhishektiwari.smsapp;
+package com.example.abhishektiwari.smsapp.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

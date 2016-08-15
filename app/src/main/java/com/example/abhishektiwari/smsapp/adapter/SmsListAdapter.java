@@ -1,4 +1,4 @@
-package com.example.abhishektiwari.smsapp;
+package com.example.abhishektiwari.smsapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.abhishektiwari.smsapp.R;
+import com.example.abhishektiwari.smsapp.SmsDetails;
+import com.example.abhishektiwari.smsapp.data.SmsData;
 
 import java.util.ArrayList;
 import java.util.Collections;

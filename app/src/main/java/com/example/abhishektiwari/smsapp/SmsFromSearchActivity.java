@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.abhishektiwari.smsapp.data.SmsData;
+import com.example.abhishektiwari.smsapp.utilities.Utility;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.abhishektiwari.smsapp;
+package com.example.abhishektiwari.smsapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import com.example.abhishektiwari.smsapp.R;
 
 /**
  * Created by abhishektiwari on 11/08/16.

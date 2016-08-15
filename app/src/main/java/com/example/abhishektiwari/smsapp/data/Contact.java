@@ -1,4 +1,4 @@
-package com.example.abhishektiwari.smsapp;
+package com.example.abhishektiwari.smsapp.data;
 
 /**
  * Created by abhishektiwari on 14/08/16.
